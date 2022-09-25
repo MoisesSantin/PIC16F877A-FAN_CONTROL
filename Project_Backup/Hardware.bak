@@ -1,0 +1,90 @@
+#include "regs_16F.h"
+#include "regs_16f87x.h"
+
+#use delay (clock = 4000000)
+#fuses xt,nowdt,noprotect,put,nobrownout,nolvp 
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                   Definição e inicialização dos port's                */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+#ZERO_RAM
+
+#use fast_io(a)
+#use fast_io(b)
+#use fast_io(c)
+#use fast_io(d)
+#use fast_io(e)
+
+// #ifndef Hardware_h
+// #define Hardware_h
+/************************************************************************************/
+/*                        Definições                                                */
+/************************************************************************************/
+
+// #bit  DISPLAY_CONTROL  =    portb.7
+ #bit  ICLK             =    portc.3
+ #bit  IDAT             =    portc.4
+ #bit  TIDAT            =    trisc.4
+// #bit  LENA          =    porte.1
+// #bit  LDAT          =    porte.0
+#bit  rb0           =    portb.0
+// #byte LPORT         =    portd
+#define DEBOUNCE         50
+#define L_ON             0x0F
+#define L_OFF            0x08
+#define L_CLR            0x01
+#define L_L1             0x80
+#define L_L2             0xC0
+#define L_CR             0x0F
+#define L_NCR            0x0C
+#define L_CFG            0x38
+#define ON               0x01
+#define OFF              0x00
+
+
+/************************************************************************************/
+/*                        Structs                                                   */
+/************************************************************************************/
+
+
+typedef enum 
+{
+   SwitchInicial = 0x01,
+   SwitchEEPROM,
+   SwitchPlus,
+   SwitchLess,
+   SwitchNotChange,
+   SwitchSleepMode,
+}SystemStatesSwitch;
+
+typedef enum 
+{
+   Write = 0x01,
+   Read,
+   Menu,
+   EEPROM,
+   SleepMode,
+   Control,
+   
+}SystemDado;
+/************************************************************************************/
+/*                        Variaveis Globais                                         */
+/************************************************************************************/
+char FlagSystemControl;
+char TimerDebounce;
+char LCD_Init, SystemControl,ValueEEPROM;
+char StateSwitch, Rotation,Flag,DadosInit;
+static char HwInitState,ADDS, Position,ValueMenu,SpeedyEEPROM;
+SystemDado ProcessFution;
+
+
+/************************************************************************************/
+/*                        Funções                                                   */
+/************************************************************************************/
+void Trata_int_RB0(void);
+void InitSystemVariables(void);
+void InicializaHardware(void);
+char GetHwInitState(void);
+char GetSystemControlState (void);
+
+// #endif
