@@ -1,0 +1,49 @@
+#include "Hardware.h"
+
+/************************************************************************************/
+/*                        Funções                                                   */
+/************************************************************************************/
+void Atraso_Milisegundos(unsigned int valor);
+void delay(void);
+
+/*******************************************************************/
+/* Nome da Função:  Atraso_Milisegundos                            */
+/* Proposito:         Gera atraso em milisegundos.                 */
+/* Entradas:         unsigned int valor - tempo desejado em ms     */
+/* Saídas:            Nenhuma                                      */
+/*******************************************************************/
+void Atraso_Milisegundos(unsigned int valor)
+{
+unsigned int  i;
+unsigned char j;
+
+ for (i =0; i< valor; i++)
+ {
+
+  for (j =0 ; j < 200; j++)
+   {
+#asm
+   NOP
+   NOP
+   NOP
+   NOP
+   NOP
+#endasm;
+   }
+ }
+}
+/*******************************************************************/
+/* Nome da Função:  delay                                          */
+/* Proposito:         Gera delay de 4 nops.                        */
+/* Entradas:         Nenhuma                                       */
+/* Saídas:            Nenhuma                                      */
+/*******************************************************************/
+void delay(void)
+{
+#asm
+   NOP
+   NOP
+   NOP
+   NOP
+#endasm
+}

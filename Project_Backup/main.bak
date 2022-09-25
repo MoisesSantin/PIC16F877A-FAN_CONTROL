@@ -1,0 +1,139 @@
+#include "Hardware.h"
+#include "display.h"
+#include "HardwareControl.h"
+#include "menu.h"
+#include "EEPROM.h"
+//#include "uart.h"          Não implementada
+#include "main.h"
+
+
+
+/*******************************************************************/
+/* Nome da Função:    main                                         */
+/* Proposito:      Função principal.                               */
+/* Entradas:       Nenhuma                                         */
+/* Saídas:         Nenhuma                                         */
+/*******************************************************************/
+void main(void)
+{
+   //InitSystemVariables();                        //Função está dentro do Hardware, já inicia CurrState como SystemOff
+   CurrState = SystemOff;
+   while(TRUE)
+   {
+      switch (CurrState)
+      {
+         case SystemOff: 
+            if (GetSystemControlState() == ON)      // Função está dentro do Hardware, interrupção do Switch S1 com debounce por desabilitação
+            {
+               CurrState = SystemInit;            // Se o sistema estiver ON passa para inicialização
+            }
+            break;
+            
+         case SystemInit:
+            if (GetHwInitState() != TRUE)         // Verifica se o Hw foi iniciado, Hardware.c      
+            {
+               InicializaHardware();            // Se não fui iniciado, inciar configurações de HW, Hardware.c
+            }
+            if (DadosInit != TRUE)               // Verifica se o Flag da inicialização do dados é true, main.c
+            {
+               ValueEEPROM = InitDados();         // Chama a função que carrega os dados da EEPROM, main.c
+               Flag = ON;                     // Seta Flag
+            }
+            CurrState = SystemRun;               // Proximo passo é ligar o sistema
+            break;
+            
+         case SystemRun:
+            if(GetSystemControlState() == ON)      // Verifica se o sistema está ligado
+            {
+               ProcessTasks(ValueEEPROM);         // Processa tarefas, manda valor lido na EEPROM, main.c
+            }
+            else if (GetSystemControlState() != ON)   // Se o sistema for desligado, Hardware.c
+            {
+               CurrState = SystemDeInit;         // Proximo passo é salvar configurações
+            }
+            break;
+            
+         case SystemDeInit:
+            DeInitSystem();                     // Salva configurações, main.c
+            CurrState = Off;                  // Proximo passo desliga sistema
+            break;
+      }
+      
+   }   
+   
+}
+
+/*******************************************************************/
+/* Nome da Função:  ProcessTasks                                   */
+/* Proposito:    Processa Tarefas do programa ligado               */
+/* Entradas:         Nenhuma                                       */
+/* Saídas:            Nenhuma                                      */
+/*******************************************************************/
+void ProcessTasks(char DadoEEPROM)
+{   
+   // if (ProcessUARTData() != TRUE);                        // Se diagnostico em alto execulta ele - nem foi implementada
+   // {
+      // ProcessFution;
+      // ProcessDisplay(StateSwitch, ProcessFution);            // Plota dados no Display, Display.c
+   // }
+   // else
+   // {
+      if ((DadoEEPROM)&&(Flag))
+      {
+         StateSwitch = SwitchEEPROM;
+         Rotation = ProcessMotorControl();
+         Flag = OFF;
+      }
+      ProcessMenu();                                 // Processa teclas, função implementada no Menu - sem debounce
+      ProcessDisplay(StateSwitch, ProcessFution);            // Plota dados no Display, Display.c
+      Rotation = ProcessMotorControl();                  // Controle do Motor, Função implementada no HardwareControl  -  Falta implementar valor eeprom anterior, falta controlo do sensor de velocidade
+      ProcessDisplay(Rotation, ProcessFution);            // Plota dados para o display, função emplementada no Display   (Não implementada)
+
+   // }
+}
+
+/*******************************************************************/
+/* Nome da Função:  DeInitSystem                                   */
+/* Proposito:    Processa Tarefas do programa ao ser ligado        */
+/* Entradas:         Nenhuma                                       */
+/* Saídas:            Nenhuma                                      */
+/*******************************************************************/
+void DeInitSystem(void)
+{   
+   Position = OFF;
+   ProcessFution = Write;
+   Position = ProcessEEPROM(Rotation, Position, ProcessFution);
+   StateSwitch = SwitchSleepMode;
+   Rotation = ProcessMotorControl();
+   SpeedyEEPROM = Rotation;
+   ProcessDisplay(Rotation,ProcessFution);
+}
+
+/*******************************************************************/
+/* Nome da Função:  DeInitSystem                                   */
+/* Proposito:    Processa Tarefas do programa ao ser ligado        */
+/* Entradas:         Nenhuma                                       */
+/* Saídas:            Nenhuma                                      */
+/*******************************************************************/
+char InitDados(void)
+{
+   char Value;
+   ProcessFution = Read;
+   Value = ProcessEEPROM(Rotation, Position, ProcessFution);
+   ProcessDisplay(Value, ProcessFution);
+   DadosInit = TRUE;
+   return (Value);
+}
+
+/*******************************************************************/
+/* Nome da Função:  ProcessUARTData                                */
+/* Proposito:    Processa Tarefas de diagnose                   */
+/* Entradas:         Nenhuma                                       */
+/* Saídas:            Nenhuma                                      */
+/*******************************************************************/
+char ProcessUARTData(void)
+{
+   return (TRUE);
+}
+
+

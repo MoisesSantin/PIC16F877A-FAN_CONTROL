@@ -1,0 +1,12 @@
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT Hardware.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT Delay.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT HardwareKeyboard.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT menu.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT HardwareEEPROM_I2C.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT HardwareEEPROM.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT HardwareDisplay.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT HardwareControl.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT EEPROM.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT display.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM -P +M +EXPORT main.c
+"C:\Program Files (x86)\PICC\CCSC.exe" +FM +P +M +DM LINK="projeto.hex=Hardware.o,Delay.o,HardwareKeyboard.o,menu.o,HardwareEEPROM_I2C.o,HardwareEEPROM.o,HardwareDisplay.o,HardwareControl.o,EEPROM.o,display.o,main.o"

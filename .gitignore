@@ -1,18 +1,81 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
 
-# Other files and folders
-.settings/
+# ignore a single file
+*.autosave
+*.launch
+*.lsl
+*.pincfg
+
+# ignore an entire directory
+**/Debug/
+/Reference/
+/.metadata/
+/Configurations/
+**/.settings/
+
+# The iLLD,Infra and Service folder can be ignored because of IDE generete
+**/Libraries/iLLD*
+**/Libraries/Infra*
+**/Libraries/Service*
+
+# ignore a file type
+*.json
+
+# add an exception (using !) to the preceding rule to track a specific file
+!package.json
+
+
+# ude report files
+__connection_failed_report*
+
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
 
 # Executables
-*.swf
-*.air
-*.ipa
-*.apk
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
