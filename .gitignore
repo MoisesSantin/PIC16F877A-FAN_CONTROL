@@ -11,6 +11,7 @@
 /.metadata/
 /Configurations/
 **/.settings/
+/Project_Backup/
 
 # The iLLD,Infra and Service folder can be ignored because of IDE generete
 **/Libraries/iLLD*
